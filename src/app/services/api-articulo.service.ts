@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ApiArticuloService {
   url: string = 'http://192.168.1.2:8080/api/v1/articulo/mostrarresumen2';
+  //url: string = 'http://200.60.58.194:8080/api/v1/articulo/mostrarresumen2';
   constructor(private http: HttpClient) {}
 
   getArticulos(): Observable<any> {
