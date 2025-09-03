@@ -2,83 +2,29 @@
   <h1 class="text-3xl font-bold mb-6 text-center">Lista de Artículos</h1>
 
   <div class="flex justify-between items-center mb-4">
-    <input
-      type="text"
-      [(ngModel)]="searchText"
-      (ngModelChange)="onSearchChange()"
-      placeholder="Buscar..."
-      class="p-2 border rounded-lg w-1/2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-    />
-
-    <button
-      (click)="exportData()"
-      class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300"
-    >
-      Exportar a Excel
-    </button>
+    <app-search-filter
+      [searchText]="searchText()"
+      (searchTextChange)="onSearchChange($event)"
+    ></app-search-filter>
+    <app-export-button
+      [data]="filteredArticulos()"
+      [headers]="headers"
+      filename="Articulos"
+    ></app-export-button>
   </div>
 
-  <div class="overflow-x-auto rounded-lg shadow-md">
-    <table class="w-full text-sm text-left text-gray-500">
-      <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-        <tr>
-          @for (header of headers; track header.key) {
-          <th
-            scope="col"
-            class="px-6 py-3 cursor-pointer select-none"
-            (click)="sortData(header.key)"
-          >
-            {{ header.label }}
-            @if (sortColumn() === header.key) {
-            <span>
-              @if (sortDirection() === 'asc') { &#9650; } @else { &#9660; }
-            </span>
-            }
-          </th>
-          }
-        </tr>
-      </thead>
-      <tbody>
-        @for (articulo of paginatedArticulos(); track articulo.codArticulo) {
-        <tr class="bg-white border-b hover:bg-gray-100">
-          @for (header of headers; track header.key) {
-          <td class="px-6 py-4 font-medium text-gray-900">
-            {{ articulo[header.key] }}
-          </td>
-          }
-        </tr>
-        }
-      </tbody>
-    </table>
-  </div>
+  <app-table
+    [data]="paginatedArticulos()"
+    [headers]="headers"
+    [sortColumn]="sortColumn()"
+    [sortDirection]="sortDirection()"
+    (sort)="onSort($event)"
+  ></app-table>
 
-  <div class="flex justify-center items-center mt-4 space-x-2">
-    <button
-      (click)="onPageChange(currentPage() - 1)"
-      [disabled]="currentPage() === 1"
-      class="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
-    >
-      Anterior
-    </button>
-
-    @for (page of pages(); track page) { @if (page === -1) {
-    <span class="px-4 py-2 border rounded-lg text-gray-600">...</span>
-    } @else {
-    <button
-      (click)="onPageChange(page)"
-      [ngClass]="{ 'bg-blue-500 text-white': page === currentPage() }"
-      class="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-200"
-    >
-      {{ page }}
-    </button>
-    } }
-
-    <button
-      (click)="onPageChange(currentPage() + 1)"
-      [disabled]="currentPage() === totalPages()"
-      class="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
-    >
-      Siguiente
-    </button>
-  </div>
+  <app-pagination
+    [currentPage]="currentPage()"
+    [totalPages]="totalPages()"
+    [pages]="pages()"
+    (pageChange)="onPageChange($event)"
+  ></app-pagination>
 </div>

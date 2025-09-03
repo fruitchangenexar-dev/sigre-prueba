@@ -6,31 +6,37 @@ import {
   OnInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { ApiArticuloService } from '../services/api-articulo.service';
-import { ExportService } from '../services/export.service';
-
+import { TableComponent } from '../shared/components/table.component';
+import { PaginationComponent } from '../shared/components/pagination.component';
+import { SearchFilterComponent } from '../shared/components/search-filter.component';
+import { ExportButtonComponent } from '../shared/components/export-button.component';
+import { Articulo } from '../models/articulo';
+import { Header } from '../models/header-table';
 @Component({
   selector: 'articulo',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    TableComponent,
+    PaginationComponent,
+    SearchFilterComponent,
+    ExportButtonComponent,
+  ],
   templateUrl: './articulo.component.html',
   styleUrl: './articulo.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArticuloComponent implements OnInit {
-  title = 'sigre-prueba';
-
-  // Usamos signals para manejar el estado de la aplicación
-  allArticulos = signal<any[]>([]);
-  filteredArticulos = signal<any[]>([]);
+  allArticulos = signal<Articulo[]>([]);
+  filteredArticulos = signal<Articulo[]>([]);
   currentPage = signal<number>(1);
   pageSize = signal<number>(10);
   searchText = signal<string>('');
   sortColumn = signal<string>('');
   sortDirection = signal<'asc' | 'desc'>('asc');
 
-  headers = [
+  headers: Header<Articulo>[] = [
     { key: 'codArticulo', label: 'Código' },
     { key: 'nombre', label: 'Nombre' },
     { key: 'subCategoriaArticulo', label: 'Sub Categ' },
@@ -41,10 +47,7 @@ export class ArticuloComponent implements OnInit {
     { key: 'costoUltCompra', label: 'Ultima Compra' },
   ];
 
-  constructor(
-    private api: ApiArticuloService,
-    private exportService: ExportService
-  ) {}
+  constructor(private api: ApiArticuloService) {}
 
   ngOnInit(): void {
     this.api.getArticulos().subscribe((data) => {
@@ -53,8 +56,8 @@ export class ArticuloComponent implements OnInit {
     });
   }
 
-  onSearchChange(): void {
-    const text = this.searchText();
+  onSearchChange(text: string): void {
+    this.searchText.set(text);
     const lowerCaseFilter = text
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
@@ -79,10 +82,10 @@ export class ArticuloComponent implements OnInit {
       this.filteredArticulos.set(this.allArticulos());
     }
     this.currentPage.set(1);
-    this.sortData(this.sortColumn());
+    this.onSort(this.sortColumn());
   }
 
-  sortData(column: string): void {
+  onSort(column: string): void {
     if (this.sortColumn() === column) {
       this.sortDirection.set(this.sortDirection() === 'asc' ? 'desc' : 'asc');
     } else {
@@ -92,8 +95,9 @@ export class ArticuloComponent implements OnInit {
 
     const sortedData = [...this.filteredArticulos()];
     sortedData.sort((a, b) => {
-      const aValue = a[column];
-      const bValue = b[column];
+      // Usa una aserción de tipo para que TypeScript confíe en que 'column' es una clave de Articulo
+      const aValue = a[column as keyof Articulo];
+      const bValue = b[column as keyof Articulo];
       let comparison = 0;
       if (aValue > bValue) {
         comparison = 1;
@@ -112,10 +116,6 @@ export class ArticuloComponent implements OnInit {
     }
   }
 
-  exportData(): void {
-    this.exportService.exportToExcel(this.allArticulos(), 'Articulos');
-  }
-
   paginatedArticulos = computed(() => {
     const start = (this.currentPage() - 1) * this.pageSize();
     const end = start + this.pageSize();
@@ -126,12 +126,11 @@ export class ArticuloComponent implements OnInit {
     Math.ceil(this.filteredArticulos().length / this.pageSize())
   );
 
-  pages = computed((): number[] => {
+  pages = computed(() => {
     const totalPages = this.totalPages();
     const currentPage = this.currentPage();
     const pages: number[] = [];
 
-    // Lógica de paginación
     if (totalPages <= 5) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
