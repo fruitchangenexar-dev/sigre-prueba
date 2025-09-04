@@ -7,7 +7,7 @@ import { Maquina } from '../models/maquina';
   providedIn: 'root',
 })
 export class ApiMaquinaService {
-  url: string = 'http://192.168.1.2:8080/api/v1/maquina/mostrarresumen';
+  url: string = 'http://192.168.1.2:8080/api/v1/maquina';
   constructor(private http: HttpClient) {}
 
   getMaquinas(): Observable<any> {
@@ -15,6 +15,14 @@ export class ApiMaquinaService {
   }
 
   findAll(): Observable<Maquina[]> {
-    return this.http.get<Maquina[]>(this.url);
+    return this.http.get<Maquina[]>(`${this.url}/mostrarresumen`);
+  }
+
+  findById(id: string): Observable<Maquina> {
+    return this.http.get<Maquina>(`${this.url}/${id}`);
+  }
+
+  saveMaquina(maquina: Maquina): Observable<Maquina> {
+    return this.http.post<Maquina>(`${this.url}/guardar`, maquina);
   }
 }

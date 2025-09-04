@@ -1,91 +1,279 @@
 <div class="flex justify-center my-8">
-    <div class="w-full max-w-lg bg-white rounded-lg shadow-xl overflow-hidden">
-        <div class="px-6 py-4">
-            <div class="border-b border-gray-200 pb-4 mb-4">
-                <h5 class="text-2xl font-semibold text-gray-800">Form {{(user.id > 0)? 'Update': 'Create'}} User</h5>
+  <div class="w-full max-w-2xl bg-white rounded-lg shadow-xl overflow-hidden">
+    <div class="px-6 py-4">
+      <div class="border-b border-gray-200 pb-4 mb-4">
+        <h5 class="text-2xl font-semibold text-gray-800">
+          Form {{ maquina.codMaquina !== "" ? "Update" : "Create" }} Maquina
+        </h5>
+      </div>
+      <div class="py-4">
+        <form (ngSubmit)="onSubmit(maquinaForm)" #maquinaForm="ngForm">
+          <div class="grid grid-flow-col">
+            <div class="col-span-1">
+              <div>
+                <label
+                  for="codMaquina"
+                  class="block text-sm font-medium text-gray-700"
+                  >Codigo</label
+                >
+                <input
+                  name="codMaquina"
+                  [(ngModel)]="maquina.codMaquina"
+                  required
+                  class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  maxlength="8"
+                  minlength="8"
+                  #codMaquina="ngModel"
+                />
+                @if (codMaquina.invalid && (codMaquina.dirty ||
+                codMaquina.touched)) { @if(codMaquina.errors!['required']){
+                <div class="text-red-600 text-sm mt-1">
+                  El codigo es requerido
+                </div>
+                } @if(codMaquina.errors!['minlength'] ){
+                <div class="text-red-600 text-sm mt-1">
+                  Codigo debe de tener 8 caracteres!
+                </div>
+                } }
+              </div>
             </div>
-            <div class="py-4">
-                <form (ngSubmit)="onSubmit(userForm)" #userForm="ngForm">
-                    <div>
-                        <input placeholder="Name" name="name" [(ngModel)]="user.name" class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required
-                            #name="ngModel">
-                        @if (name.invalid && (name.dirty || name.touched)) {
-                        @if(name.errors!['required']){
-                        <div class="text-red-600 text-sm mt-1">
-                            Nombre es requerido
-                        </div>
-                        }
-                        }
-                    </div>
-                    <div>
-                        <input placeholder="Lastname" name="lastname" [(ngModel)]="user.lastname" required
-                            class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" #lastname="ngModel">
-                        @if (lastname.invalid && (lastname.dirty || lastname.touched)) {
-                        @if(lastname.errors!['required']){
-                        <div class="text-red-600 text-sm mt-1">
-                            El lastname es requerido
-                        </div>
-                        }
-                        }
-                    </div>
-                    <div>
-                        <input placeholder="Email" name="email" [(ngModel)]="user.email" class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            type="email" required email #email="ngModel">
-                        @if (email.invalid && (email.dirty || email.touched)) {
-                        @if(email.errors!['required']){
-                        <div class="text-red-600 text-sm mt-1">
-                            El email es requerido
-                        </div>
-                        }
-                        @if(email.errors!['email']){
-                        <div class="text-red-600 text-sm mt-1">
-                            El email no tiene formato correcto!
-                        </div>
-                        }
-                        }
-                    </div>
-                    <div>
-                        <input placeholder="Username" name="username" [(ngModel)]="user.username"
-                            class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required minlength="8" #username="ngModel">
-                        @if (username.invalid && (username.dirty || username.touched)) {
-                        @if(username.errors!['required']){
-                        <div class="text-red-600 text-sm mt-1">
-                            El username es requerido
-                        </div>
-                        }
-                        @if(username.errors!['minlength']){
-                        <div class="text-red-600 text-sm mt-1">
-                            Username debe de tener al menos 8 caracteres!
-                        </div>
-                        }
-                        }
-                    </div>
-                    <div>
-                        <input placeholder="Password" name="password" type="password" [(ngModel)]="user.password"
-                            class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required minlength="6" #password="ngModel">
-                        @if (password.invalid && (password.dirty || password.touched)) {
-                        @if(password.errors!['required']){
-                        <div class="text-red-600 text-sm mt-1">
-                            El password es requerido
-                        </div>
-                        }
-                        @if(password.errors!['minlength']){
-                        <div class="text-red-600 text-sm mt-1">
-                            Password debe de tener al menos 6 caracteres!
-                        </div>
-                        }
-                        }
-                    </div>
-                    <div class="flex justify-end mt-4">
-                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 mr-2" [disabled]="userForm.invalid">
-                            {{(user.id > 0)? 'Update': 'Create'}}
-                        </button>
-                        <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300" (click)="onClear(userForm)">
-                            Clear
-                        </button>
-                    </div>
-                </form>
+            <div class="col-span-1">
+              <div>
+                <label
+                  for="descMaq"
+                  class="block text-sm font-medium text-gray-700"
+                  >Descripcion</label
+                >
+                <input
+                  name="descMaq"
+                  [(ngModel)]="maquina.descMaq"
+                  class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                  maxlength="100"
+                  #descMaq="ngModel"
+                />
+                @if (descMaq.invalid && (descMaq.dirty || descMaq.touched)) {
+                @if(descMaq.errors!['required']){
+                <div class="text-red-600 text-sm mt-1">
+                  Descripcion es requerido
+                </div>
+                } }
+              </div>
             </div>
-        </div>
+          </div>
+
+          <div class="grid grid-flow-col">
+            <div class="col-span-1">
+              <div>
+                <label
+                  for="capNormDiaria"
+                  class="block text-sm font-medium text-gray-700"
+                  >Capacidad Normal Diaria</label
+                >
+                <input
+                  type="number"
+                  id="capNormDiaria"
+                  placeholder="8"
+                  name="capNormDiaria"
+                  [(ngModel)]="maquina.capNormDiaria"
+                  min="0"
+                  max="999"
+                  class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  #capNormDiaria="ngModel"
+                />
+                @if (capNormDiaria.invalid && (capNormDiaria.dirty ||
+                capNormDiaria.touched)) { @if(capNormDiaria.errors!['min']) {
+                <div class="text-red-600 text-sm mt-1">
+                  El valor mínimo es {{ capNormDiaria.errors!["min"].min }}
+                </div>
+                } @if(capNormDiaria.errors!['max']) {
+                <div class="text-red-600 text-sm mt-1">
+                  El valor máximo es {{ capNormDiaria.errors!["max"].max }}
+                </div>
+                } }
+              </div>
+            </div>
+            <div class="col-span-1">
+              <div>
+                <label
+                  for="capExtraDiaria"
+                  class="block text-sm font-medium text-gray-700"
+                  >Capacidad Extra Diaria</label
+                >
+                <input
+                  type="number"
+                  id="capExtraDiaria"
+                  placeholder="0"
+                  name="capExtraDiaria"
+                  [(ngModel)]="maquina.capExtraDiaria"
+                  min="0"
+                  max="999"
+                  class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  #capExtraDiaria="ngModel"
+                />
+                @if (capExtraDiaria.invalid && (capExtraDiaria.dirty ||
+                capExtraDiaria.touched)) { @if(capExtraDiaria.errors!['min']) {
+                <div class="text-red-600 text-sm mt-1">
+                  El valor mínimo es {{ capExtraDiaria.errors!["min"].min }}
+                </div>
+                } @if(capExtraDiaria.errors!['max']) {
+                <div class="text-red-600 text-sm mt-1">
+                  El valor máximo es {{ capExtraDiaria.errors!["max"].max }}
+                </div>
+                } }
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-flow-col">
+            <div class="col-span-1">
+              <div>
+                <label
+                  for="capacidadCarga"
+                  class="block text-sm font-medium text-gray-700"
+                  >Capacidad Carga</label
+                >
+                <input
+                  type="number"
+                  id="capacidadCarga"
+                  placeholder="0"
+                  name="capacidadCarga"
+                  [(ngModel)]="maquina.capacidadCarga"
+                  min="0"
+                  max="99999"
+                  class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  #capacidadCarga="ngModel"
+                />
+                @if (capacidadCarga.invalid && (capacidadCarga.dirty ||
+                capacidadCarga.touched)) { @if(capacidadCarga.errors!['min']) {
+                <div class="text-red-600 text-sm mt-1">
+                  El valor mínimo es {{ capacidadCarga.errors!["min"].min }}
+                </div>
+                } @if(capacidadCarga.errors!['max']) {
+                <div class="text-red-600 text-sm mt-1">
+                  El valor máximo es {{ capacidadCarga.errors!["max"].max }}
+                </div>
+                } }
+              </div>
+            </div>
+            <div class="col-span-1">
+              <div>
+                <label
+                  for="tara"
+                  class="block text-sm font-medium text-gray-700"
+                  >Tara</label
+                >
+                <input
+                  type="number"
+                  id="tara"
+                  placeholder="0"
+                  name="tara"
+                  [(ngModel)]="maquina.tara"
+                  min="0"
+                  max="99999"
+                  class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  #tara="ngModel"
+                />
+                @if (tara.invalid && (tara.dirty || tara.touched)) {
+                @if(tara.errors!['min']) {
+                <div class="text-red-600 text-sm mt-1">
+                  El valor mínimo es {{ tara.errors!["min"].min }}
+                </div>
+                } @if(tara.errors!['max']) {
+                <div class="text-red-600 text-sm mt-1">
+                  El valor máximo es {{ tara.errors!["max"].max }}
+                </div>
+                } }
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-flow-col">
+            <div class="col-span-1">
+              <div>
+                <label
+                  for="costoXUnd"
+                  class="block text-sm font-medium text-gray-700"
+                  >Costo por Unidad</label
+                >
+                <input
+                  type="number"
+                  id="costoXUnd"
+                  placeholder="0.0"
+                  name="costoXUnd"
+                  [(ngModel)]="maquina.costoXUnd"
+                  min="0"
+                  max="9999999999999"
+                  class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  #costoXUnd="ngModel"
+                />
+                @if (costoXUnd.invalid && (costoXUnd.dirty ||
+                costoXUnd.touched)) { @if(costoXUnd.errors!['min']) {
+                <div class="text-red-600 text-sm mt-1">
+                  El valor mínimo es {{ costoXUnd.errors!["min"].min }}
+                </div>
+                } @if(costoXUnd.errors!['max']) {
+                <div class="text-red-600 text-sm mt-1">
+                  El valor máximo es {{ costoXUnd.errors!["max"].max }}
+                </div>
+                } }
+              </div>
+            </div>
+            <div class="col-span-1">
+              <div>
+                <label
+                  for="costoUnitario"
+                  class="block text-sm font-medium text-gray-700"
+                  >Costo Unitario</label
+                >
+                <input
+                  type="number"
+                  id="costoUnitario"
+                  placeholder="0.0"
+                  name="costoUnitario"
+                  [(ngModel)]="maquina.costoUnitario"
+                  min="0"
+                  max="9999999999999"
+                  class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  #costoUnitario="ngModel"
+                />
+                @if (costoUnitario.invalid && (costoUnitario.dirty ||
+                costoUnitario.touched)) { @if(costoUnitario.errors!['min']) {
+                <div class="text-red-600 text-sm mt-1">
+                  El valor mínimo es {{ costoUnitario.errors!["min"].min }}
+                </div>
+                } @if(costoUnitario.errors!['max']) {
+                <div class="text-red-600 text-sm mt-1">
+                  El valor máximo es {{ costoUnitario.errors!["max"].max }}
+                </div>
+                } }
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-flow-col">
+            <div class="col-span-1"></div>
+            <div class="col-span-1"></div>
+          </div>
+
+          <div class="flex justify-end mt-4">
+            <button
+              type="submit"
+              class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 mr-2"
+              [disabled]="maquinaForm.invalid"
+            >
+              {{ maquina.codMaquina !== "" ? "Update" : "Create" }}
+            </button>
+            <button
+              type="button"
+              class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300"
+              (click)="onClear(maquinaForm)"
+            >
+              Clear
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>

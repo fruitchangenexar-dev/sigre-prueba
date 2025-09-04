@@ -1,51 +1,100 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
-import { SharingDataService } from '../../services/sharing-data.service';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  NgForm,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { User } from '../../models/user';
+import { Maquina, MaquinaInterface } from '../../models/maquina';
+import { SharingMaquinaService } from '../../services/sharing-maquina.service';
+import { ApiMaquinaService } from '../../services/api-maquina.service';
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'user-form',
+  selector: 'maquina-form',
   standalone: true,
   imports: [FormsModule],
   templateUrl: './maquina-form.component.html',
 })
 export class MaquinaPruebaFormComponent implements OnInit {
-  user: User;
+  maquina: MaquinaInterface;
+  maquinaForm!: FormGroup;
 
   constructor(
+    private fb: FormBuilder,
     private route: ActivatedRoute,
-    private sharingData: SharingDataService
+    private sharingData: SharingMaquinaService,
+    private api: ApiMaquinaService
   ) {
-    this.user = new User();
+    this.maquina = new Maquina();
   }
 
   ngOnInit(): void {
-    this.sharingData.selectUserEventEmitter.subscribe(
-      (user) => (this.user = user)
+    this.sharingData.selectMaquinaEventEmitter.subscribe(
+      //(maquina) => (this.maquina = maquina)
+      (maquina) => {}
     );
 
     this.route.paramMap.subscribe((params) => {
-      const id: number = +(params.get('id') || '0');
-
-      if (id > 0) {
-        this.sharingData.findUserByIdEventEmitter.emit(id);
+      const id: string = params.get('id') || '';
+      console.log(id);
+      console.log('entre');
+      if (id !== '') {
+        this.api.findById(id).subscribe((data) => {
+          this.maquina = data;
+        });
+        this.sharingData.findMaquinaByIdEventEmitter.emit(id);
       }
+    });
+
+    this.maquinaForm = this.fb.group({
+      codMaquina: [
+        this.maquina.codMaquina,
+        [Validators.required, Validators.minLength(8), Validators.maxLength(8)],
+      ],
+      descMaq: [this.maquina.codMaquina, [Validators.required, Validators.maxLength(100)]],
+      capNormDiaria: [this.maquina.capExtraDiaria, [Validators.min(0), Validators.max(999)]],
+      capExtraDiaria: [this.maquina.capExtraDiaria, [Validators.min(0), Validators.max(999)]],
+      capacidadCarga: [this.maquina.capacidadCarga, [Validators.min(0), Validators.max(99999)]],
+      tara: [this.maquina.tara, [Validators.min(0), Validators.max(99999)]],
+      costoXUnd: [this.maquina.costoXUnd, [Validators.min(0), Validators.max(99999999999)]],
+      costoUnitario: [this.maquina.costoUnitario, [Validators.min(0), Validators.max(99999999999)]],
     });
   }
 
-  onSubmit(userForm: NgForm): void {
-    if (userForm.valid) {
-      this.sharingData.newUserEventEmitter.emit(this.user);
-      console.log(this.user);
+  onSubmit(maquinaForm: NgForm): void {
+    if (maquinaForm.valid) {
+      const maquinaData = this.maquinaForm.value;
+      this.api.saveMaquina(maquinaData).subscribe({
+        next: (response) => {
+          Swal.fire({
+              title: 'Guardado!',
+              text: 'Maquina guardada con exito!',
+              icon: 'success',
+            });
+          console.log('Máquina guardada con éxito:', response);
+        },
+        error: (error) => {
+          Swal.fire({
+              title: 'Error!',
+              text: 'Ha ocurrido un error!',
+              icon: 'error',
+            });
+          console.error('Error al guardar la máquina:', error);
+        },
+      });
+
+      //this.sharingData.newMaquinaEventEmitter.emit(this.maquina);
     }
-    userForm.reset();
-    userForm.resetForm();
+    maquinaForm.reset();
+    maquinaForm.resetForm();
   }
 
-  onClear(userForm: NgForm): void {
-    this.user = new User();
-    userForm.reset();
-    userForm.resetForm();
+  onClear(maquinaForm: NgForm): void {
+    this.maquina = new Maquina();
+    maquinaForm.reset();
+    maquinaForm.resetForm();
   }
 }

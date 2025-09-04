@@ -13,7 +13,8 @@ import { SearchFilterComponent } from '../../shared/components/search-filter.com
 import { ExportButtonComponent } from '../../shared/components/export-button.component';
 import { Maquina } from '../../models/maquina';
 import { Header } from '../../models/header-table';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { SharingMaquinaService } from '../../services/sharing-maquina.service';
 @Component({
   selector: 'maquina-table',
   standalone: true,
@@ -41,24 +42,41 @@ export class MaquinaTableComponent implements OnInit {
 
   headers: Header<Maquina>[] = [
     { key: 'codMaquina', label: 'Código' },
-    { key: 'flagEstado', label: 'Estado' },
+    //{ key: 'flagEstado', label: 'Estado' },
     { key: 'descMaq', label: 'Descripcion' },
     { key: 'capNormDiaria', label: 'Capacidad Normal Diaria' },
     { key: 'capExtraDiaria', label: 'Capacidad Extra Diaria' },
     { key: 'capacidadCarga', label: 'Capacidad Carga' },
     { key: 'tara', label: 'Tara' },
     { key: 'costoXUnd', label: 'costo x unidad' },
-    { key: 'flagMaqEquipo', label: 'MaqEquipo' },
-    { key: 'flagReplicacion', label: 'Replicacion' },
+    //{ key: 'flagMaqEquipo', label: 'MaqEquipo' },
+    //{ key: 'flagReplicacion', label: 'Replicacion' },
     { key: 'codOrigen', label: 'Origen' },
   ];
 
-  constructor(private api: ApiMaquinaService) {}
+  //  allMaquinas: Maquina[] = [];
+
+  constructor(
+    private api: ApiMaquinaService,
+    private sharingData: SharingMaquinaService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.api.getMaquinas().subscribe((data) => {
+    this.api.findAll().subscribe((data) => {
       this.allMaquinas.set(data);
       this.filteredMaquinas.set(data);
+    });
+  }
+
+  onRemoveMaquina(codMaquina: string): void {
+    this.sharingData.idMaquinaEventEmitter.emit(codMaquina);
+  }
+
+  onSelecteMaquina(codMaquina: String): void {
+    console.log('Editando...');
+    this.router.navigate(['/maquinas/edit', codMaquina], {
+      state: { codMaquina },
     });
   }
 

@@ -4,6 +4,7 @@ import {
   Input,
   Output,
   EventEmitter,
+  TemplateRef, // Importa TemplateRef
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Header } from '../../models/header-table';
@@ -31,15 +32,23 @@ import { Header } from '../../models/header-table';
               }
             </th>
             }
+            @if (actionsTemplate) {
+            <th class="px-6 py-3 select-none">acciones</th>
+            }
           </tr>
         </thead>
         <tbody>
-          @for (item of data; track item.codArticulo) {
+          @for (item of data; track $index) {
           <tr class="bg-white border-b hover:bg-gray-200">
             @for (header of headers; track header.key) {
             <td class="px-6 py-4 font-medium text-gray-900">
               {{ item[header.key] }}
             </td>
+            }
+            @if (actionsTemplate) {
+              <td class="px-6 py-4">
+                <ng-container *ngTemplateOutlet="actionsTemplate; context: { $implicit: item }"></ng-container>
+              </td>
             }
           </tr>
           }
@@ -51,11 +60,13 @@ import { Header } from '../../models/header-table';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent {
-  // El componente ahora es genérico
   @Input({ required: true }) data!: any[];
   @Input({ required: true }) headers!: Header<any>[];
   @Input({ required: true }) sortColumn!: string;
   @Input({ required: true }) sortDirection!: 'asc' | 'desc';
+
+  // Nuevo Input para la plantilla de acciones
+  @Input() actionsTemplate?: TemplateRef<any>;
 
   @Output() sort = new EventEmitter<any>();
 }

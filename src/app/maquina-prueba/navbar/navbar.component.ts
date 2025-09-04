@@ -1,6 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { User } from '../../models/user';
+import { Maquina } from '../../models/maquina';
 
 @Component({
   selector: 'navbar',
@@ -10,7 +10,7 @@ import { User } from '../../models/user';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavbarComponent {
-  @Input() users: User[] = [];
+  @Input() maquinas: Maquina[] = [];
   isMenuOpen: boolean = false;
 
   toggleMenu(): void {
