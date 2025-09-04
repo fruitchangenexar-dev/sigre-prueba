@@ -5,11 +5,12 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Maquina } from '../../models/maquina';
+import { Router } from '@angular/router';
 import { ApiMaquinaService } from '../../services/api-maquina.service';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
+import { OrigenShared } from '../../models/origen';
+import { ApiOrigenService } from '../../services/api-origen.service';
 
 @Component({
   selector: 'maquina-form',
@@ -19,11 +20,13 @@ import Swal from 'sweetalert2';
 })
 export class MaquinaPruebaFormComponent implements OnInit {
   maquinaForm!: FormGroup;
+  public origenes: OrigenShared[] = [];
 
   constructor(
     private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private api: ApiMaquinaService
+    private router: Router,
+    private api: ApiMaquinaService,
+    private origenService: ApiOrigenService
   ) {}
 
   ngOnInit(): void {
@@ -33,24 +36,19 @@ export class MaquinaPruebaFormComponent implements OnInit {
         [Validators.required, Validators.minLength(8), Validators.maxLength(8)],
       ],
       descMaq: ['', [Validators.required, Validators.maxLength(100)]],
-      capNormDiaria: [8, [Validators.min(0), Validators.max(999)]],
-      capExtraDiaria: [0, [Validators.min(0), Validators.max(999)]],
-      capacidadCarga: [0, [Validators.min(0), Validators.max(99999)]],
-      tara: [0, [Validators.min(0), Validators.max(99999)]],
-      costoXUnd: [0, [Validators.min(0), Validators.max(99999999999)]],
-      costoUnitario: [0, [Validators.min(0), Validators.max(99999999999)]],
-      codOrigen: ['', [Validators.required, Validators.maxLength(2)]],
+      capNormDiaria: [, [Validators.min(0), Validators.max(999)]],
+      capExtraDiaria: [, [Validators.min(0), Validators.max(999)]],
+      capacidadCarga: [, [Validators.min(0), Validators.max(99999)]],
+      tara: [, [Validators.min(0), Validators.max(99999)]],
+      costoXUnd: [, [Validators.min(0), Validators.max(99999999999)]],
+      costoUnitario: [, [Validators.min(0), Validators.max(99999999999)]],
+      //codOrigen: ['', [Validators.required, Validators.maxLength(2)]],
+      codOrigen: ['', [Validators.required]],
     });
 
-    this.route.paramMap.subscribe((params) => {
-      const id: string = params.get('id') || '';
-      console.log('ID from route:', id);
+    this.origenService.listShared().subscribe((data) => {
 
-      if (id !== '') {
-        this.api.findById(id).subscribe((data: Maquina) => {
-          this.maquinaForm.patchValue(data);
-        });
-      }
+      this.origenes = data;
     });
   }
 
@@ -60,6 +58,7 @@ export class MaquinaPruebaFormComponent implements OnInit {
       console.log(maquinaData);
       this.api.saveMaquina(maquinaData).subscribe({
         next: (response) => {
+          this.router.navigate(['/maquinas']);
           Swal.fire({
             title: 'Guardado!',
             text: 'Maquina guardada con exito!',

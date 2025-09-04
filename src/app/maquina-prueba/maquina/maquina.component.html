@@ -33,21 +33,5 @@
     [sortColumn]="sortColumn()"
     [sortDirection]="sortDirection()"
     (sort)="onSort($event)"
-    [actionsTemplate]="actions"
   ></app-table>
 </div>
-
-<ng-template #actions let-maquina>
-  <button
-    class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-lg text-xs shadow-md transition duration-300 mr-2"
-    (click)="onRemoveMaquina(maquina.codMaquina)"
-  >
-    eliminar
-  </button>
-  <button
-    class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded-lg text-xs shadow-md transition duration-300"
-    (click)="onSelecteMaquina(maquina.codMaquina)"
-  >
-    editar
-  </button>
-</ng-template>
