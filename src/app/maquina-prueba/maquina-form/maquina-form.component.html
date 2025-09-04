@@ -1,0 +1,91 @@
+<div class="flex justify-center my-8">
+    <div class="w-full max-w-lg bg-white rounded-lg shadow-xl overflow-hidden">
+        <div class="px-6 py-4">
+            <div class="border-b border-gray-200 pb-4 mb-4">
+                <h5 class="text-2xl font-semibold text-gray-800">Form {{(user.id > 0)? 'Update': 'Create'}} User</h5>
+            </div>
+            <div class="py-4">
+                <form (ngSubmit)="onSubmit(userForm)" #userForm="ngForm">
+                    <div>
+                        <input placeholder="Name" name="name" [(ngModel)]="user.name" class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required
+                            #name="ngModel">
+                        @if (name.invalid && (name.dirty || name.touched)) {
+                        @if(name.errors!['required']){
+                        <div class="text-red-600 text-sm mt-1">
+                            Nombre es requerido
+                        </div>
+                        }
+                        }
+                    </div>
+                    <div>
+                        <input placeholder="Lastname" name="lastname" [(ngModel)]="user.lastname" required
+                            class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" #lastname="ngModel">
+                        @if (lastname.invalid && (lastname.dirty || lastname.touched)) {
+                        @if(lastname.errors!['required']){
+                        <div class="text-red-600 text-sm mt-1">
+                            El lastname es requerido
+                        </div>
+                        }
+                        }
+                    </div>
+                    <div>
+                        <input placeholder="Email" name="email" [(ngModel)]="user.email" class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            type="email" required email #email="ngModel">
+                        @if (email.invalid && (email.dirty || email.touched)) {
+                        @if(email.errors!['required']){
+                        <div class="text-red-600 text-sm mt-1">
+                            El email es requerido
+                        </div>
+                        }
+                        @if(email.errors!['email']){
+                        <div class="text-red-600 text-sm mt-1">
+                            El email no tiene formato correcto!
+                        </div>
+                        }
+                        }
+                    </div>
+                    <div>
+                        <input placeholder="Username" name="username" [(ngModel)]="user.username"
+                            class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required minlength="8" #username="ngModel">
+                        @if (username.invalid && (username.dirty || username.touched)) {
+                        @if(username.errors!['required']){
+                        <div class="text-red-600 text-sm mt-1">
+                            El username es requerido
+                        </div>
+                        }
+                        @if(username.errors!['minlength']){
+                        <div class="text-red-600 text-sm mt-1">
+                            Username debe de tener al menos 8 caracteres!
+                        </div>
+                        }
+                        }
+                    </div>
+                    <div>
+                        <input placeholder="Password" name="password" type="password" [(ngModel)]="user.password"
+                            class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required minlength="6" #password="ngModel">
+                        @if (password.invalid && (password.dirty || password.touched)) {
+                        @if(password.errors!['required']){
+                        <div class="text-red-600 text-sm mt-1">
+                            El password es requerido
+                        </div>
+                        }
+                        @if(password.errors!['minlength']){
+                        <div class="text-red-600 text-sm mt-1">
+                            Password debe de tener al menos 6 caracteres!
+                        </div>
+                        }
+                        }
+                    </div>
+                    <div class="flex justify-end mt-4">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 mr-2" [disabled]="userForm.invalid">
+                            {{(user.id > 0)? 'Update': 'Create'}}
+                        </button>
+                        <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300" (click)="onClear(userForm)">
+                            Clear
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="flex justify-center items-center mt-4 space-x-2">
+    <div class="flex justify-center items-center mb-4 space-x-2">
       <button
         (click)="pageChange.emit(currentPage - 1)"
         [disabled]="currentPage === 1"

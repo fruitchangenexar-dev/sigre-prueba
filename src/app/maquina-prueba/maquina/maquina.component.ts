@@ -6,16 +6,16 @@ import {
   OnInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ApiMaquinaService } from '../services/api-maquina.service';
-import { TableComponent } from '../shared/components/table.component';
-import { PaginationComponent } from '../shared/components/pagination.component';
-import { SearchFilterComponent } from '../shared/components/search-filter.component';
-import { ExportButtonComponent } from '../shared/components/export-button.component';
-import { Maquina } from '../models/maquina';
-import { Header } from '../models/header-table';
+import { ApiMaquinaService } from '../../services/api-maquina.service';
+import { TableComponent } from '../../shared/components/table.component';
+import { PaginationComponent } from '../../shared/components/pagination.component';
+import { SearchFilterComponent } from '../../shared/components/search-filter.component';
+import { ExportButtonComponent } from '../../shared/components/export-button.component';
+import { Maquina } from '../../models/maquina';
+import { Header } from '../../models/header-table';
 import { RouterLink } from '@angular/router';
 @Component({
-  selector: 'maquina',
+  selector: 'maquina-table',
   standalone: true,
   imports: [
     RouterLink,
@@ -26,10 +26,11 @@ import { RouterLink } from '@angular/router';
     ExportButtonComponent,
   ],
   templateUrl: './maquina.component.html',
-  styleUrl: './maquina.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MaquinaComponent implements OnInit {
+export class MaquinaTableComponent implements OnInit {
+  title: string = 'Listado de Maquinas';
+
   allMaquinas = signal<Maquina[]>([]);
   filteredMaquinas = signal<Maquina[]>([]);
   currentPage = signal<number>(1);

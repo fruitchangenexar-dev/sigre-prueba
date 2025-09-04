@@ -18,7 +18,7 @@ import { FormsModule } from '@angular/forms';
       [ngModel]="searchText"
       (ngModelChange)="onSearchTextChange($event)"
       placeholder="Buscar..."
-      class="p-2 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+      class="p-2 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-cyan-500"
     />
   `,
   styles: ``,

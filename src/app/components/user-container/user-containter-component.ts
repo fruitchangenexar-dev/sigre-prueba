@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import Swal from 'sweetalert2';
-import { AsyncPipe } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { SharingDataService } from '../../services/sharing-data.service';
@@ -10,7 +9,7 @@ import { User } from '../../models/user';
 @Component({
   selector: 'app-user-container',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent, AsyncPipe],
+  imports: [RouterOutlet, NavbarComponent],
   template: `
     <navbar [users]="users" />
     <div class="container my-4 mx-auto px-4">

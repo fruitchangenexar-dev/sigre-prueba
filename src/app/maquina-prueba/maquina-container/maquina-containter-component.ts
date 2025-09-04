@@ -1,26 +1,25 @@
-/*import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import Swal from 'sweetalert2';
-import { AsyncPipe } from '@angular/common';
-import { NavbarComponent } from './navbar/navbar.component';
-import { SharingDataService } from '../services/sharing-data.service';
-import { UserService } from '../services/user.service';
-import { User } from '../models/user';
+import { UserService } from '../../services/user.service';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { SharingDataService } from '../../services/sharing-data.service';
+import { User } from '../../models/user';
 
 @Component({
-  selector: 'app-user-container',
+  selector: 'maquina-prueba-container',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent, AsyncPipe],
+  imports: [RouterOutlet, NavbarComponent],
   template: `
-    <navbar [users]="users" />
+    <navbar [users]="maquinas" />
     <div class="container my-4 mx-auto px-4">
       <router-outlet />
     </div>
   `,
   styles: [],
 })
-export class UserContainerComponent implements OnInit {
-  users: User[] = [];
+export class MaquinaPruebaContainerComponent implements OnInit {
+  maquinas: User[] = [];
 
   constructor(
     private router: Router,
@@ -29,7 +28,7 @@ export class UserContainerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.service.findAll().subscribe((users) => (this.users = users));
+    this.service.findAll().subscribe((maquinas) => (this.maquinas = maquinas));
     this.addUser();
     this.removeUser();
     this.findUserById();
@@ -37,19 +36,21 @@ export class UserContainerComponent implements OnInit {
 
   findUserById() {
     this.sharingData.findUserByIdEventEmitter.subscribe((id) => {
-      const user = this.users.find((user) => user.id == id);
-      this.sharingData.selectUserEventEmitter.emit(user);
+      const maquina = this.maquinas.find((maquina) => maquina.id == id);
+      this.sharingData.selectUserEventEmitter.emit(maquina);
     });
   }
 
   addUser() {
-    this.sharingData.newUserEventEmitter.subscribe((user) => {
-      if (user.id > 0) {
-        this.users = this.users.map((u) => (u.id == user.id ? { ...user } : u));
+    this.sharingData.newUserEventEmitter.subscribe((maquina) => {
+      if (maquina.id > 0) {
+        this.maquinas = this.maquinas.map((u) => (u.id == maquina.id ? { ...maquina } : u));
       } else {
-        this.users = [...this.users, { ...user, id: new Date().getTime() }];
+        this.maquinas = [...this.maquinas, { ...maquina, id: new Date().getTime() }];
       }
-      this.router.navigate(['/users'], { state: { users: this.users } });
+      this.router.navigate(['/maquinas'], {
+        state: { maquinas: this.maquinas },
+      });
       Swal.fire({
         title: 'Guardado!',
         text: 'Usuario guardado con exito!',
@@ -70,12 +71,12 @@ export class UserContainerComponent implements OnInit {
         confirmButtonText: 'Si',
       }).then((result) => {
         if (result.isConfirmed) {
-          this.users = this.users.filter((user) => user.id != id);
+          this.maquinas = this.maquinas.filter((maquina) => maquina.id != id);
           this.router
-            .navigate(['/users/create'], { skipLocationChange: true })
+            .navigate(['/maquinas/create'], { skipLocationChange: true })
             .then(() => {
-              this.router.navigate(['/users'], {
-                state: { users: this.users },
+              this.router.navigate(['/maquinas'], {
+                state: { maquinas: this.maquinas },
               });
             });
 
@@ -89,4 +90,3 @@ export class UserContainerComponent implements OnInit {
     });
   }
 }
-*/
