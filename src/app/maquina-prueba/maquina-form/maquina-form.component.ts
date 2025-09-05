@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { OrigenShared } from '../../models/origen';
 import { ApiOrigenService } from '../../services/api-origen.service';
+import { Maquina } from '../../models/maquina';
 
 @Component({
   selector: 'maquina-form',
@@ -42,21 +43,17 @@ export class MaquinaPruebaFormComponent implements OnInit {
       tara: [, [Validators.min(0), Validators.max(99999)]],
       costoXUnd: [, [Validators.min(0), Validators.max(99999999999)]],
       costoUnitario: [, [Validators.min(0), Validators.max(99999999999)]],
-      //codOrigen: ['', [Validators.required, Validators.maxLength(2)]],
       codOrigen: ['', [Validators.required]],
     });
 
     this.origenService.listShared().subscribe((data) => {
-
       this.origenes = data;
     });
   }
 
   onSubmit(): void {
     if (this.maquinaForm.valid) {
-      const maquinaData = this.maquinaForm.value;
-      console.log(maquinaData);
-      this.api.saveMaquina(maquinaData).subscribe({
+      this.api.saveMaquina(this.maquinaForm.value).subscribe({
         next: (response) => {
           this.router.navigate(['/maquinas']);
           Swal.fire({
