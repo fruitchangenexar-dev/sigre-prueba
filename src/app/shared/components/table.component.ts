@@ -4,7 +4,7 @@ import {
   Input,
   Output,
   EventEmitter,
-  TemplateRef, // Importa TemplateRef
+  TemplateRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Header } from '../../models/header-table';
@@ -31,8 +31,7 @@ import { Header } from '../../models/header-table';
               </span>
               }
             </th>
-            }
-            @if (actionsTemplate) {
+            } @if (actionsTemplate) {
             <th class="px-6 py-3 select-none">acciones</th>
             }
           </tr>
@@ -44,11 +43,15 @@ import { Header } from '../../models/header-table';
             <td class="px-6 py-4 font-medium text-gray-900">
               {{ item[header.key] }}
             </td>
-            }
-            @if (actionsTemplate) {
-              <td class="px-6 py-4">
-                <ng-container *ngTemplateOutlet="actionsTemplate; context: { $implicit: item }"></ng-container>
-              </td>
+            } @if (actionsTemplate) {
+            <td class="px-6 py-4">
+              <ng-container
+                *ngTemplateOutlet="
+                  actionsTemplate;
+                  context: { $implicit: item }
+                "
+              ></ng-container>
+            </td>
             }
           </tr>
           }

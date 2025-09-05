@@ -1,8 +1,16 @@
-// src/app/components/navbar/navbar.component.ts
+// src/app/shared/components/navbar.component.ts
 
 import { CommonModule } from '@angular/common';
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { RouterModule, IsActiveMatchOptions } from '@angular/router'; // Import IsActiveMatchOptions
+
+// Define una interfaz para los enlaces de navegación para mayor claridad y seguridad de tipos
+export interface NavLink {
+  label: string;
+  path: string;
+  isActiveOptions?: IsActiveMatchOptions; // Use the correct type here
+  isactive: boolean;
+}
 
 @Component({
   selector: 'navbar',
@@ -12,9 +20,7 @@ import { RouterModule } from '@angular/router';
     <nav class="relative bg-white dark:bg-cyan-900 shadow-md">
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
-          <a class="text-2xl font-bold text-cyan-800 dark:text-white"
-            >Maquinas App</a
-          >
+          <a class="text-2xl font-bold text-cyan-800 dark:text-white">{{ title }}</a>
           <div class="md:hidden">
             @if (!isMenuOpen) {
             <button
@@ -65,23 +71,17 @@ import { RouterModule } from '@angular/router';
             <ul
               class="flex flex-col md:flex-row md:space-x-8 mt-4 md:mt-0 px-4 pb-4 md:px-0 md:pb-0"
             >
+              @for (link of links; track link.path) {
               <li>
                 <a
                   class="block py-2 px-3 text-black dark:text-white rounded hover:bg-gray-500 md:hover:bg-transparent md:border-0 md:hover:text-cyan-700 transition duration-300"
-                  [routerLink]="['/maquinas']"
+                  [routerLink]="[link.path]"
                   routerLinkActive="md:text-cyan-700 font-semibold"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  >Home</a
+                  [routerLinkActiveOptions]="{exact: link.isactive}"
+                  >{{ link.label }}</a
                 >
               </li>
-              <li>
-                <a
-                  class="block py-2 px-3 text-black dark:text-white rounded hover:bg-gray-500 md:hover:bg-transparent md:border-0 md:hover:text-cyan-700 transition duration-300"
-                  [routerLink]="['/maquinas/create']"
-                  routerLinkActive="md:text-cyan-700 font-semibold"
-                  >Crear Maquina</a
-                >
-              </li>
+              }
             </ul>
           </div>
         </div>
@@ -92,6 +92,9 @@ import { RouterModule } from '@angular/router';
 })
 export class NavbarComponent {
   isMenuOpen: boolean = false;
+
+  @Input() title: string = 'App';
+  @Input() links: NavLink[] = [];
 
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
