@@ -26,7 +26,7 @@ import { SharingMaquinaService } from '../../services/sharing-maquina.service';
     SearchFilterComponent,
     ExportButtonComponent,
   ],
-  templateUrl: './maquina.component.html',
+  templateUrl: './maquina-table.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MaquinaTableComponent implements OnInit {

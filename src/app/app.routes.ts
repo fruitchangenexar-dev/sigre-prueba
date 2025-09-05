@@ -2,9 +2,9 @@ import { Routes } from '@angular/router';
 import { UserComponent } from './components/user/user.component';
 import { UserFormComponent } from './components/user-form/user-form.component';
 import { UserContainerComponent } from './components/user-container/user-containter-component';
-import { MaquinaPruebaContainerComponent } from './maquina-prueba/maquina-container/maquina-containter-component';
-import { MaquinaPruebaFormComponent } from './maquina-prueba/maquina-form/maquina-form.component';
-import { MaquinaTableComponent } from './maquina-prueba/maquina/maquina.component';
+import { MaquinaPruebaContainerComponent } from './maquinas/maquina-container/maquina-containter-component';
+import { MaquinaPruebaFormComponent } from './maquinas/maquina-form/maquina-form.component';
+import { MaquinaTableComponent } from './maquinas/maquina-table/maquina-table.component';
 
 export const routes: Routes = [
   {
@@ -44,16 +44,12 @@ export const routes: Routes = [
         path: 'create',
         component: MaquinaPruebaFormComponent,
       },
-      {
-        path: 'edit/:id',
-        component: MaquinaPruebaFormComponent,
-      },
     ],
   },
   {
     path: 'articulos',
     title: 'Articulos',
     loadComponent: () =>
-      import('./articulo/articulo.component').then((c) => c.ArticuloComponent),
+      import('./articulos/articulo.component').then((c) => c.ArticuloComponent),
   },
 ];

@@ -10,7 +10,7 @@ import { Header } from '../../models/header-table';
   template: `
     <button
       (click)="exportData()"
-      class="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300"
+      class="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300"
     >
       Exportar
     </button>
