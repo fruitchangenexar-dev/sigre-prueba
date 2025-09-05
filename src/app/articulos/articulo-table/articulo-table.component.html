@@ -1,0 +1,37 @@
+<div class="container mx-auto p-4">
+  <div class="flex justify-between items-center mb-4">
+    <app-search-filter
+      [searchText]="searchText()"
+      (searchTextChange)="onSearchChange($event)"
+    ></app-search-filter>
+    <div class="flex justify-end items-center">
+      <button
+        [routerLink]="['/articulos/create']"
+        class="mr-2 bg-[#4b8ca1] hover:bg-[#254550] text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300"
+      >
+        Nuevo
+      </button>
+      <app-export-button
+        [data]="filteredArticulos()"
+        [headers]="headers"
+        filename="Articulos"
+      ></app-export-button>
+    </div>
+  </div>
+  <h1 class="text-3xl font-bold mb-6 text-center">{{ title }}</h1>
+
+  <app-pagination
+    [currentPage]="currentPage()"
+    [totalPages]="totalPages()"
+    [pages]="pages()"
+    (pageChange)="onPageChange($event)"
+  ></app-pagination>
+
+  <app-table
+    [data]="paginatedArticulos()"
+    [headers]="headers"
+    [sortColumn]="sortColumn()"
+    [sortDirection]="sortDirection()"
+    (sort)="onSort($event)"
+  ></app-table>
+</div>

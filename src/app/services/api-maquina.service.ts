@@ -23,7 +23,6 @@ export class ApiMaquinaService {
   }
 
   saveMaquina(maquina: Maquina): Observable<Maquina> {
-    console.log('si');
     return this.http.post<Maquina>(`${this.url}/guardar`, maquina);
   }
 }

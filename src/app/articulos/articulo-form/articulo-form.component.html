@@ -1,0 +1,320 @@
+<!-- Contenedor principal de la página -->
+<div class="flex justify-center p-4">
+  <div class="w-full max-w-2xl bg-white rounded-lg shadow-xl overflow-hidden">
+    <!-- Encabezado del formulario -->
+    <div class="px-6 py-4">
+      <div class="border-b border-gray-200 pb-4 mb-4">
+        <h5 class="text-2xl font-semibold text-gray-800">Registrar Articulo</h5>
+      </div>
+      <!-- Formulario reactivo -->
+      <div class="py-4">
+        <form [formGroup]="articuloForm" (ngSubmit)="onSubmit()">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label
+                for="codArticulo"
+                class="block text-sm font-medium text-gray-700"
+                >Codigo</label
+              >
+              <input
+                formControlName="codArticulo"
+                id="codArticulo"
+                class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                maxlength="12"
+                minlength="0"
+              />
+              @if (articuloForm.get('codArticulo')?.invalid &&
+              (articuloForm.get('codArticulo')?.dirty ||
+              articuloForm.get('codArticulo')?.touched)) {
+              @if(articuloForm.get('codArticulo')?.errors!['required']){
+              <div class="text-red-600 text-sm mt-1">
+                El codigo es requerido
+              </div>
+              } }
+            </div>
+            <div>
+              <label
+                for="codUnidad"
+                class="block text-sm font-medium text-gray-700"
+                >Unidad</label
+              >
+              <select
+                id="codUnidad"
+                formControlName="codUnidad"
+                class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="" disabled>Seleccione un origen</option>
+                @for (unidad of unidades; track unidad.unidad) {
+                <option [ngValue]="unidad.unidad">
+                  {{ unidad.descripcion }}
+                </option>
+                }
+              </select>
+              @if (articuloForm.get('codUnidad')?.invalid &&
+              (articuloForm.get('codUnidad')?.dirty ||
+              articuloForm.get('codUnidad')?.touched)) { @if
+              (articuloForm.get('codUnidad')?.errors!['required']) {
+              <div class="text-red-600 text-sm mt-1">
+                La undiad es requeridA
+              </div>
+              } }
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label
+                for="nombre"
+                class="block text-sm font-medium text-gray-700"
+                >Nombre</label
+              >
+              <input
+                formControlName="nombre"
+                id="nombre"
+                class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                maxlength="150"
+              />
+              @if (articuloForm.get('nombre')?.invalid &&
+              (articuloForm.get('nombre')?.dirty ||
+              articuloForm.get('nombre')?.touched)) {
+              @if(articuloForm.get('nombre')?.errors!['required']){
+              <div class="flex items-center text-sm mt-1 text-red-600">
+                <svg
+                  class="w-4 h-4 mr-1.5 fill-current"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
+                  ></path>
+                </svg>
+                <span>Nombre es requerido</span>
+              </div>
+              } }
+            </div>
+
+            <div>
+              <label
+                for="subCategoriaArticulo"
+                class="block text-sm font-medium text-gray-700"
+                >Sub Categoria</label
+              >
+              <select
+                id="subCategoriaArticulo"
+                formControlName="subCategoriaArticulo"
+                class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="" disabled>Seleccione una opcion</option>
+                @for (subCategoria of subCategorias; track
+                subCategoria.codSubCategoria) {
+                <option [ngValue]="subCategoria.codSubCategoria">
+                  {{ subCategoria.descripcion }}
+                </option>
+                }
+              </select>
+              @if (articuloForm.get('subCategoriaArticulo')?.invalid &&
+              (articuloForm.get('subCategoriaArticulo')?.dirty ||
+              articuloForm.get('subCategoriaArticulo')?.touched)) { @if
+              (articuloForm.get('subCategoriaArticulo')?.errors!['required']) {
+              <div class="text-red-600 text-sm mt-1">
+                La Sub Categoria es requerida
+              </div>
+              } }
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 grid-rows-2 gap-4">
+            <div class="row-span-2">
+              <label
+                for="descripcion"
+                class="block text-sm font-medium text-gray-700"
+                >Descripcion</label
+              >
+              <textarea
+                id="descripcion"
+                formControlName="descripcion"
+                rows="5"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm"
+                placeholder="Ingresa una descripción larga sin caracteres especiales."
+              ></textarea>
+
+              @if (articuloForm.get('descripcion')?.invalid &&
+              (articuloForm.get('descripcion')?.dirty ||
+              articuloForm.get('descripcion')?.touched)) {
+              @if(articuloForm.get('descripcion')?.errors!['required']){
+              <div class="text-red-600 text-sm mt-1">
+                Descripcion es requerido
+              </div>
+              } }
+            </div>
+            <div class="row-span-1">
+              <label
+                for="codOrigen"
+                class="block text-sm font-medium text-gray-700"
+                >Origen</label
+              >
+              <select
+                id="codOrigen"
+                formControlName="codOrigen"
+                class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="" disabled>Seleccione un origen</option>
+                @for (origen of origenes; track origen.codOrigen) {
+                <option [ngValue]="origen.codOrigen">
+                  {{ origen.nombre }}
+                </option>
+                }
+              </select>
+              @if (articuloForm.get('codOrigen')?.invalid &&
+              (articuloForm.get('codOrigen')?.dirty ||
+              articuloForm.get('codOrigen')?.touched)) { @if
+              (articuloForm.get('codOrigen')?.errors!['required']) {
+              <div class="text-red-600 text-sm mt-1">
+                El origen es requerido
+              </div>
+              } }
+            </div>
+            <div>
+              <label
+                for="pesoUnidad"
+                class="block text-sm font-medium text-gray-700"
+                >Peso Unidad</label
+              >
+              <input
+                type="number"
+                id="pesoUnidad"
+                placeholder="0"
+                formControlName="pesoUnidad"
+                class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              @if (articuloForm.get('pesoUnidad')?.invalid &&
+              (articuloForm.get('pesoUnidad')?.dirty ||
+              articuloForm.get('pesoUnidad')?.touched)) {
+              @if(articuloForm.get('pesoUnidad')?.errors!['required']){
+              <div class="text-red-600 text-sm mt-1">Peso es requerido</div>
+              } @if(articuloForm.get('pesoUnidad')?.errors!['min']) {
+              <div class="text-red-600 text-sm mt-1">
+                El valor mínimo es
+                {{ (articuloForm.get("pesoUnidad")?.errors)!["min"].min }}
+              </div>
+              } @if (articuloForm.get('pesoUnidad')?.errors?.['invalidDecimal'])
+              {
+              <div class="text-red-600 text-sm mt-1">
+                Formato de decimal incorrecto.
+              </div>
+              } }
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label
+                for="costoPromSol"
+                class="block text-sm font-medium text-gray-700"
+                >Costo Promedio Soles</label
+              >
+              <input
+                type="number"
+                id="costoPromSol"
+                placeholder="0"
+                formControlName="costoPromSol"
+                class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              @if (articuloForm.get('costoPromSol')?.invalid &&
+              (articuloForm.get('costoPromSol')?.dirty ||
+              articuloForm.get('costoPromSol')?.touched)) {
+              @if(articuloForm.get('costoPromSol')?.errors!['min']) {
+              <div class="text-red-600 text-sm mt-1">
+                El valor mínimo es
+                {{ (articuloForm.get("costoPromSol")?.errors)!["min"].min }}
+              </div>
+              } @if
+              (articuloForm.get('costoPromSol')?.errors?.['invalidDecimal']) {
+              <div class="text-red-600 text-sm mt-1">
+                Formato de decimal incorrecto.
+              </div>
+              } }
+            </div>
+
+            <div>
+              <label
+                for="costoPromDol"
+                class="block text-sm font-medium text-gray-700"
+                >Costo Promedio Dolares</label
+              >
+              <input
+                type="number"
+                id="costoPromDol"
+                placeholder="0"
+                formControlName="costoPromDol"
+                class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              @if (articuloForm.get('costoPromDol')?.invalid &&
+              (articuloForm.get('costoPromDol')?.dirty ||
+              articuloForm.get('costoPromDol')?.touched)) {
+              @if(articuloForm.get('costoPromDol')?.errors!['min']) {
+              <div class="text-red-600 text-sm mt-1">
+                El valor mínimo es
+                {{ (articuloForm.get("costoPromDol")?.errors)!["min"].min }}
+              </div>
+              } @if
+              (articuloForm.get('costoPromDol')?.errors?.['invalidDecimal']) {
+              <div class="text-red-600 text-sm mt-1">
+                Formato de decimal incorrecto.
+              </div>
+              } }
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label
+                for="costoUltCompra"
+                class="block text-sm font-medium text-gray-700"
+                >Costo Ultima Compra</label
+              >
+              <input
+                type="number"
+                id="costoUltCompra"
+                placeholder="0"
+                formControlName="costoUltCompra"
+                class="w-full px-4 py-2 my-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              @if (articuloForm.get('costoUltCompra')?.invalid &&
+              (articuloForm.get('costoUltCompra')?.dirty ||
+              articuloForm.get('costoUltCompra')?.touched)) {
+              @if(articuloForm.get('costoUltCompra')?.errors!['min']) {
+              <div class="text-red-600 text-sm mt-1">
+                El valor mínimo es
+                {{ (articuloForm.get("costoUltCompra")?.errors)!["min"].min }}
+              </div>
+              } @if
+              (articuloForm.get('costoUltCompra')?.errors?.['invalidDecimal']) {
+              <div class="text-red-600 text-sm mt-1">
+                Formato de decimal incorrecto.
+              </div>
+              } }
+            </div>
+          </div>
+
+          <!-- Botones del formulario -->
+          <div class="flex justify-end mt-4">
+            <button
+              type="submit"
+              class="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 mr-2 disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:cursor-not-allowed"
+              [disabled]="articuloForm.invalid"
+            >
+              Agregar
+            </button>
+            <button
+              type="button"
+              class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300"
+              (click)="onClear()"
+            >
+              Clear
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

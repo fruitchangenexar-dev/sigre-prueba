@@ -5,6 +5,9 @@ import { UserContainerComponent } from './components/user-container/user-contain
 import { MaquinaPruebaContainerComponent } from './maquinas/maquina-container/maquina-containter-component';
 import { MaquinaPruebaFormComponent } from './maquinas/maquina-form/maquina-form.component';
 import { MaquinaTableComponent } from './maquinas/maquina-table/maquina-table.component';
+import { ArticuloContainerComponent } from './articulos/articulo-container/articulo-containter-component';
+import { ArticuloTableComponent } from './articulos/articulo-table/articulo-table.component';
+import { ArticuloPruebaFormComponent } from './articulos/articulo-form/articulo-form.component';
 
 export const routes: Routes = [
   {
@@ -43,6 +46,21 @@ export const routes: Routes = [
       {
         path: 'create',
         component: MaquinaPruebaFormComponent,
+      },
+    ],
+  },
+  {
+    path: 'articulos',
+    title: 'Articulos',
+    component: ArticuloContainerComponent,
+    children: [
+      {
+        path: '',
+        component: ArticuloTableComponent,
+      },
+      {
+        path: 'create',
+        component: ArticuloPruebaFormComponent,
       },
     ],
   },

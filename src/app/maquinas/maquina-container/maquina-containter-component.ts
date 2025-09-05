@@ -19,7 +19,7 @@ import {
 })
 export class MaquinaPruebaContainerComponent {
   maquinasLinks: NavLink[] = [
-    { label: 'Home', path: '/maquinas', isactive: true },
+    { label: 'Listado', path: '/maquinas', isactive: true },
     { label: 'Crear Maquina', path: '/maquinas/create', isactive: false },
   ];
 }

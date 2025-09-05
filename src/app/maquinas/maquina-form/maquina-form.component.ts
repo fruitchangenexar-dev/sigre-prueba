@@ -11,7 +11,6 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { OrigenShared } from '../../models/origen';
 import { ApiOrigenService } from '../../services/api-origen.service';
-import { Maquina } from '../../models/maquina';
 
 @Component({
   selector: 'maquina-form',

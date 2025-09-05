@@ -1,0 +1,5 @@
+/* Este CSS debe ir en el archivo de estilos del componente (por ejemplo, tu-componente.component.css) */
+.placeholder-error::placeholder {
+  color: #dc2626; /* Color rojo de Tailwind (red-600) */
+  opacity: 1; /* Esto es importante para que el color se muestre correctamente en diferentes navegadores */
+}
